@@ -77,7 +77,7 @@ $aDivB:int <- 10 / 5 ->|
 ```
 
 **Variable declarations/assignments are expression statements!**
-They evaluate the the value they are being assigned to.
+They evaluate to the value they are being assigned to.
 
 _Meaning you can do stuff like these:_
 ```zoop
