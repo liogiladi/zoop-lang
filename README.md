@@ -59,7 +59,7 @@ A basic interpreter for Zoop language
 
 # Variables
 ```zoop
-<@ | $> <identifier> : <type> <- <value>
+<@ | $> IDENTIFIER : TYPE <- VALUE
 ```
 
 **Rules:**
@@ -111,6 +111,62 @@ _Examples:_
 ```
      
 <!-- ROADMAP -->
+
+# Scopes
+
+Scopes for variables can be created and nested using curly braces `{}`.
+
+Variables created in a scope, get tossed away once its statements get executed:
+```zoop
+{
+    @num:int <- 5 ->| -- Output: 5
+}
+
+@num ->| -- Error: Undefined variable '@num'
+```
+
+> Declaring num outside of the scope will work.
+
+---
+
+Variables declared in an inner scope shadow same name variables which are defined in an outer scope:
+```zoop
+@a:num <- 3 ->| -- Output: 3
+
+{
+    @a:string <- "New value" -- Output: New value
+}
+
+@a ->| -- Output: 3
+```
+
+---
+
+# Zoops
+Use zoops to resuse functionality across your code, hence _"zoop de loop"_.
+
+```zoop
+zoop:TYPE`name` <- $param1:TYPE ... $paramN:TYPE
+    ...
+end zoop
+
+-- OR
+
+zoop:TYPE`name` <- $param1:TYPE ... $paramN:TYPE => STATEMENT
+```
+
+> **Zoops don't create scopes!** 
+> Upon exacting the zoop, the arguments are injected to the current scope and tossed out when the block ends.
+>
+> **Zoop's parameters must be immutable**
+> That's how it is mates.
+
+## Exacting the zoop
+```zoop
+`name` de EXPRESSION1 ... EXPRESSION_N
+```
+---
+
 
 ## Roadmap
 
