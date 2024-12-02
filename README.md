@@ -148,15 +148,25 @@ Use zoops to resuse functionality across your code, hence _"zoop de loop"_.
 ```zoop
 zoop:TYPE`name` <- $param1:TYPE ... $paramN:TYPE
     ...
+    VALUE ->
 end zoop
 
--- OR
-
+-- One statement (that harbors a return statement)
 zoop:TYPE`name` <- $param1:TYPE ... $paramN:TYPE => STATEMENT
+
+-- Void (no return value)
+zoop`name` <- ...
+    -> -- Early return
+end zoop
+
+-- No parameters
+zoop:TYPE`name`
+    ...
+end zoop
 ```
 
 > **Zoops don't create scopes!** 
-> Upon exacting the zoop, the arguments are injected to the current scope and tossed out when the block ends.
+> Upon exacting the zoop, the arguments are injected to the De Stack in the global scope and tossed out when the block ends.
 >
 > **Zoop's parameters must be immutable**
 > That's how it is mates.
@@ -166,6 +176,16 @@ zoop:TYPE`name` <- $param1:TYPE ... $paramN:TYPE => STATEMENT
 `name` de EXPRESSION1 ... EXPRESSION_N
 ```
 ---
+Example:
+```zoop
+zoop:dec`clamp` <- $min:dec $val:dec $max:dec
+    if $val < $min => $min ->
+    elif $val > $max => $max ->
+    $val ->
+end zoop
+
+@calmpedNum:dec <- `clamp` de 5.3 2.4 7.8 -- 2.4
+```
 
 
 ## Roadmap
