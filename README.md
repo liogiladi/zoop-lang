@@ -27,6 +27,14 @@ A basic interpreter for Zoop language
 | `udec`   | `4.5`           |
 | `string` | `"Hello"`       |
 
+> **Unsigned types can only be used explictly**
+> 
+> Meaning, you can only create them when casting the signed literal to the unsigned one:
+> ```zoop
+> 5~uint
+> ```
+(More on type casting later)
+
 # Operators
 ## Arithmatic
 | Operator             | Description                                               | Example                          |
@@ -45,17 +53,36 @@ A basic interpreter for Zoop language
 | Strict less than (`<`)    | Return true if the left operand is strictly less than the right operand       | `1 < 3`                   |
 
 ## Logic
-| Operator              | Description                                                                     | Examples returning `true`  |
-|-----------------------|---------------------------------------------------------------------------------|----------------------------|
-| AND (`&`)             | Returns true if both the operands yield `true`                                  | `4=4 & 2>1`                |
-| OR (`\|`)             | Returns true if at least one of the operands yield `true`                       | `4=4 \| 2>1`, `4=4 \| 2=1` |
-| Strict OR / XOR (`^`) | Returns true if and only if one the operands is `true` and the other is `false` | `4=4 ^ 2=1`                |
-| Unary NOT (`~`)       | Prefix unary operator. Negates the bool value of its operand                    | `~(1 > 3)`                 |
+| Operator                | Description                                                                     | Examples returning `true`  |
+|-------------------------|---------------------------------------------------------------------------------|----------------------------|
+| AND (`&`)               | Returns true if both the operands yield `true`                                  | `4=4 & 2>1`                |
+| OR (`\|`)               | Returns true if at least one of the operands yield `true`                       | `4=4 \| 2>1`, `4=4 \| 2=1` |
+| Strict OR / XOR (`\|\|`)| Returns true if and only if one the operands is `true` and the other is `false` | `4=4 \|\| 2=1`             |
+| Unary NOT (`~`)         | Prefix unary operator. Negates the bool value of its operand                    | `~(1 > 3)`                 |
 
 ## Strings
 | Operator            | Description                                 | Examples           |
 |---------------------|---------------------------------------------|--------------------|
 | Concatenation (`_`) | Concats its 2 operands into 1 string result | `"Hello "_"World"` |
+
+## Data Types
+| Operator        | Description                                             | Examples      |
+|-----------------|---------------------------------------------------------|---------------|
+| Cast (`~ TYPE`) | Casts the left operand to the type given to the right.  | `4~dec` (4.0) |
+
+# Conversion Table
+| From            | To            | Result        | Description                                                                                                                                            | Examples                                    |
+|-----------------|---------------|---------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------|
+| Any             | `string`      | `string`      | The string representaion of any value matches as seen in output/code                                                                                   | `4.5~string` 4.5                            |
+| `int`           | `uint`        | `uint`        | If the source is negative then it turns to 0; Else remains the same                                                                                    | `(-5)~uint` 0 `5~uint` 5                    |
+| `uint`          | `int`         | `int`         | Remains the same                                                                                                                                       | `(5~uint)~int` 5                            |
+| `dec`           | `udec`        | `udec`        | If the source is negative then it turns to 0.0; Else remains the same                                                                                  | `(-5.0)~udec` 0.0                           |
+| `udec`          | `dec`         | `udec`        | Remains the same                                                                                                                                       | `(5.4~udec)~dec` 5.4                        |
+| `udec`, `dec`   | `uint,int`    | `uint,int`    | The fractional part is tossed away, leaving you with the integer one.  Casting a negative value to an unsigned type, follows the same as above - 0/0.0 | `(-5.2)~uint` 0 `5.8~int` 5                 |
+| `uint,int`      | `udec`, `dec` | `udec`, `dec` | Remains the same unless you cast a negative value to an unsigned type,  which will follow the same as above - 0.0                                      | `5~udec` 5.0 `(-5)~udec` 0                  |
+| Numeric         | `bool`        | `bool`        | If the value is 0 then it turns to `false` Else `true`                                                                                                 | `4~bool` true `-5~bool` true `0~bool` false |
+| `bool`          | Numeric       | `bool`        | If the value is `true` then it turns to 0 Else 1                                                                                                       | `true~int` 1 `false~udec` 0.0               |
+| **Non Numeric** | **Numeric**   | **NONE**      | **Can no do. This result in an error!**                                                                                                                | **NONE**                                    |
 
 # Variables
 ```zoop
@@ -109,8 +136,37 @@ _Examples:_
 -- This also works
 @fullName:string <- <-| _ <-|
 ```
-     
-<!-- ROADMAP -->
+
+# Precedence
+The expressions mentioned above have an operation precedence as such (DESC order):
+
+| Name          | Operations                                                                    |
+|---------------|-------------------------------------------------------------------------------|
+| Primary       | Grouping `()`, Input `<-\|`, Declaration/Assignment, De `de` (Zoop execution) |
+| Cast          | Casting Binary operation `~`                                                  |
+| Unary         | NOT `~`, Negative `-`                                                         |
+| Factor        | Multiplication `*`, Division `/`                                              |
+| Term          | Addition `+`, Subtraction `-`                                                 |
+| Comparision   | Greater `>=`, Strict Greater `>`, Less `<=`, Strict Less `<`                  |
+| Equality      | Equals `=`, Not Equals `~=`                                                   |
+| Logic         | AND `&`, OR `\|`, XOR `\|\|`                                                  |
+| Concatenation | `_`                                                                           |
+
+**If operations are in the same level of precedence, they are performed left to right**
+
+Examples:
+```zoop
+2 + 5 > 6 = 2
+-- (2+5) > 6 = 2
+-- (7 > 6) = 2
+-- Error: Cannot compare equality of <bool> with <int> 
+```
+```zoop
+2 + 5 > 6 & false _ 3 + -5.5~int _ "HI"
+-- ((7>6) & false) _ 3 + -(5.5~int) _ "HI"
+-- false _ (3 - 5) _ "HI"
+-- Result: "false_-2_HI" 
+```
 
 # Scopes
 
@@ -142,6 +198,38 @@ Variables declared in an inner scope shadow same name variables which are define
 
 ---
 
+# Control Flow
+Pretty Standard stuff if I might say:
+```zoop
+if EXPRESSION
+    ...
+end if
+elif EXPRESSION
+    ...
+end elif
+.
+.
+.
+else
+    ...
+end else
+```
+
+You can shorthand the condition to one statement:
+```zoop
+if EXPRESSION => STATEMENT
+elif EXPRESSION => STATEMENT
+.
+.
+.
+else => STATEMENT
+```
+
+**Note: As menitoned in the previous section, only `{}` creates a scope.**
+Therefore everything that executes inside the conditions (or zoops, which will be explained later) are in recording to the current scope. **
+
+---
+
 # Zoops
 Use zoops to resuse functionality across your code, hence _"zoop de loop"_.
 
@@ -166,7 +254,7 @@ end zoop
 ```
 
 > **Zoops don't create scopes!** 
-> Upon exacting the zoop, the arguments are injected to the De Stack in the global scope and tossed out when the block ends.
+> Upon exacting the zoop, the arguments are injected to a new context in the De Stack in the global scope and are tossed out when the block ends.
 >
 > **Zoop's parameters must be immutable**
 > That's how it is mates.
