@@ -17,6 +17,17 @@
 
 A basic interpreter for Zoop language
 
+# Comments
+```zoop
+-- This is a line comment
+... -- This is a mid-line comment
+
+--* This is a block comment
+  * One can comment
+  * several things in this one!
+*-- 
+```
+
 # Data types
 | Name     | Examples        |
 |----------|-----------------|
@@ -27,13 +38,16 @@ A basic interpreter for Zoop language
 | `udec`   | `4.5`           |
 | `string` | `"Hello"`       |
 
-> **Unsigned types can only be used explictly**
+> **Numeric literals default to a signed type**
 > 
-> Meaning, you can only create them when casting the signed literal to the unsigned one:
+> You can create an unsigned literal by post-fixing the number with `u`:
 > ```zoop
-> 5~uint
+> 5     -- int
+> 5u    -- uint
+> 5.3   -- dec
+> 5.3u  -- udec
 > ```
-(More on type casting later)
+> (More on type casting later)
 
 # Operators
 ## Arithmatic
@@ -41,6 +55,19 @@ A basic interpreter for Zoop language
 |----------------------|-----------------------------------------------------------|----------------------------------|
 | Basic (`+ - * /`)    | Cover the basic arithmatic we all know and love           | 2+2 equals 3+1                   |
 | Unary negation (`-`) | Prefix unary operator. Return the negation of its operand | if `x` is 1 then `-x` returns -1 |
+> **Notice!**
+> The basic unary negation operator is counted as subtraction if no operator exists between the right and the left:
+> ```zoop
+> 3 - 5 -- Binary subtraction
+> 3  -5 -- Still binary subtraction!
+> ```
+> Following that, making the `-` adjacent to the right operand, doesn't inherently make the operation unary.
+>
+> When unary operation is used, the operator must be adjacent the the right:
+> ```zoop
+> 3 + -5     -- -2
+> 3 + - 5    -- Error: Invalid expression
+> ```
 
 ## Comparison
 | Operator                  | Description                                                                   | Examples returning `true` |
@@ -226,7 +253,8 @@ else => STATEMENT
 ```
 
 **Note: As menitoned in the previous section, only `{}` creates a scope.**
-Therefore everything that executes inside the conditions (or zoops, which will be explained later) are in recording to the current scope. **
+
+Therefore everything that executes inside the conditions (or zoops, which will be explained later) are in recording to the current scope.
 
 ---
 
@@ -275,6 +303,29 @@ end zoop
 @calmpedNum:dec <- `clamp` de 5.3 2.4 7.8 -- 2.4
 ```
 
+Implementaion of `pow` zoop (for integer exponents):
+```zoop
+zoop:dec`_pow` <- $base:dec $exp:uint => {
+    if $exp = 0u => 1.0 ->
+    elif $exp = 1u => $base ->
+
+    @dst:uint <- $exp-1u
+    @src:dec <- $base
+
+    $base * `_pow` de @src @dst ->
+}
+
+zoop:dec`pow` <- $base:dec $exp:int => {
+    if $exp = 1 => 1 ->
+    if $exp > 0 => `_pow` de $base $exp~uint ->
+    1.0 / (`_pow` de $base (-$exp)~uint) ->
+}
+
+`pow` de -3.0 (-2) ->|
+```
+> Notice that the second argument must be wraped in `()`.
+> As mentioned above, if the argument won't be grouped, it will parsed as part of a binary operation with `-3.0`
+> and there will be an arguments - parameters count mismatch
 
 ## Roadmap
 
