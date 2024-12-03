@@ -87,7 +87,6 @@ A basic interpreter for Zoop language.
 |-------------------------|---------------------------------------------------------------------------------|----------------------------|
 | AND (`&`)               | Returns true if both the operands yield `true`                                  | `4=4 & 2>1`                |
 | OR (`\|`)               | Returns true if at least one of the operands yield `true`                       | `4=4 \| 2>1`, `4=4 \| 2=1` |
-| Strict OR / XOR (`\|\|`)| Returns true if and only if one the operands is `true` and the other is `false` | `4=4 \|\| 2=1`             |
 | Unary NOT (`~`)         | Prefix unary operator. Negates the bool value of its operand                    | `~(1 > 3)`                 |
 
 ## Strings
