@@ -17,7 +17,7 @@
 
 A basic interpreter for Zoop language.
 
-> Side note: Unfortunetly, markdown's custom code snippets / html tags cannot be highlighted.
+> Unfortunetly, markdown's custom code snippets / html tags cannot be highlighted.
 > So everything is a blob of white text :/
 
 # Comments
@@ -58,7 +58,7 @@ A basic interpreter for Zoop language.
 |----------------------|-----------------------------------------------------------|----------------------------------|
 | Basic (`+ - * /`)    | Cover the basic arithmatic we all know and love           | 2+2 equals 3+1                   |
 | Unary negation (`-`) | Prefix unary operator. Return the negation of its operand | if `x` is 1 then `-x` returns -1 |
-> **Notice!**
+> [!NOTE]
 > The basic unary negation operator is counted as subtraction if no operator exists between the right and the left:
 > ```zoop
 > 3 - 5 -- Binary subtraction
@@ -167,6 +167,16 @@ _Examples:_
 @fullName:string <- <-| _ <-|
 ```
 
+> [!IMPORTANT]
+> **Input by default are always returned as a string!**
+> 
+> For other result types, you need to specify a type for the input:
+> ```zoop
+> @age:uint <- <-| -- Runtime Error: Cannot assign <string> to variable '@age' of type <uint>.
+>
+> @age:uint <- <-|:uint -- This will work, you are specificaly requesting an unsigned integer.
+> ```
+
 # Precedence
 The expressions mentioned above have an operation precedence as such (DESC order):
 
@@ -200,7 +210,7 @@ Examples:
 
 # Scopes
 
-Scopes for variables can be created and nested using curly braces `{}`.
+Scopes for variables are created only by using curly braces `{}`.
 
 Variables created in a scope, get tossed away once its statements get executed:
 ```zoop
@@ -213,9 +223,20 @@ Variables created in a scope, get tossed away once its statements get executed:
 
 > Declaring num outside of the scope will work.
 
+Nestings work aswell:
+```zoop
+{
+    @num:int <- 5 ->| -- Output: 5
+
+   {
+      @num:bool <- false ->| -- Output: false   
+   }
+}
+```
+
 ---
 
-Variables declared in an inner scope shadow same name variables which are defined in an outer scope:
+**Variables declared in an inner scope shadow same name variables which are defined in an outer scope:**
 ```zoop
 @a:num <- 3 ->| -- Output: 3
 
@@ -224,6 +245,18 @@ Variables declared in an inner scope shadow same name variables which are define
 }
 
 @a ->| -- Output: 3
+```
+
+Notice that if not declared in an inner scope, assignment occurs on parent scopes:
+```zoop
+@a:num <- 3 ->| -- Output: 3
+
+{
+    @a <- 8
+    @a:string <- "New value" -- Output: New value
+}
+
+@a ->| -- Output: 8
 ```
 
 ---
@@ -255,9 +288,9 @@ elif EXPRESSION => STATEMENT
 else => STATEMENT
 ```
 
-**Note: As menitoned in the previous section, only `{}` creates a scope.**
-
-Therefore everything that executes inside the conditions (or zoops, which will be explained later) are in recording to the current scope.
+> [!IMPORTANT]
+> **As menitoned in the previous section, only `{}` creates a scope.**
+> Therefore everything that executes inside the conditions (or zoops, which will be explained later) are in recording to the current scope.
 
 ---
 
@@ -284,6 +317,7 @@ zoop:TYPE`name`
 end zoop
 ```
 
+> [!IMPORTANT]
 > **Zoops don't create scopes!** 
 > Upon exacting the zoop, the arguments are injected to a new context in the De Stack in the global scope and are tossed out when the block ends.
 >
@@ -326,17 +360,21 @@ zoop:dec`pow` <- $base:dec $exp:int => {
 
 `pow` de -3.0 (-2) ->|
 ```
+> [!NOTE]
 > Notice that the second argument must be wraped in `()`.
 > As mentioned above, if the argument won't be grouped, it will parsed as part of a binary operation with `-3.0`
 > and there will be an arguments - parameters count mismatch
 
 ## Roadmap
 
--   [ ] Roadmap
+-   [ ] Secret
+-   [ ] Switch case like?
+-   [ ] Error handeling
 
 <!-- CONTRIBUTING -->
 
 ## Contributing
 
 This README file uses an awesome template :) [check it out!](https://github.com/othneildrew/Best-README-Template)
+
 (The license is provided in the root folder)
