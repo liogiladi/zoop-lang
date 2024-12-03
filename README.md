@@ -9,14 +9,16 @@
     <img width="100px" src="https://github.com/liogiladi/zoop/blob/main/ZOOP%20LOGO.png" />
 
   <h3 align="center">Zoop language</h3>
-  <i align="center">zoop de loop</i>
+  <i align="center">"zoop de loop"</i>
 </div>
 
+---
 <!-- ABOUT THE PROJECT -->
 
-## About The Project
+A basic interpreter for Zoop language.
 
-A basic interpreter for Zoop language
+> Side note: Unfortunetly, markdown's custom code snippets / html tags cannot be highlighted.
+> So everything is a blob of white text :/
 
 # Comments
 ```zoop
