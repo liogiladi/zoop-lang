@@ -1,11 +1,12 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-    <picture>
+   <!--  <picture>
         <source media="(prefers-color-scheme: light)" srcset="https://github.com/liogiladi/web-os/blob/a7f67cd09365cc8fc8096f049d6d4f88ae353137/media/svgs/logo-basic-black.svg">
         <source media="(prefers-color-scheme: dark)" srcset="https://github.com/liogiladi/web-os/blob/a7f67cd09365cc8fc8096f049d6d4f88ae353137/media/svgs/logo-basic.svg">
         <img width="100px"/>
-    </picture>
+    </picture> -->
+    <img width="100px" src="https://github.com/liogiladi/zoop/blob/main/ZOOP%20LOGO.png" />
 
   <h3 align="center">Zoop language</h3>
   <i align="center">zoop de loop</i>
