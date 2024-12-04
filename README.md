@@ -374,19 +374,21 @@ Yes yes I know I said _"Zoop de loop"_ but that is why it's a secret!
 And I am telling it only to you 🤫
 
 ```zoop
-**loop** {
+loop
    ...
-}
-```
-The loops runs indefinitely unless told otherwise. 
+end loop
 
-To terminate the loop, use the `end` keyword:
+loop => STATEMENT
+```
+loops runs indefinitely unless told otherwise. 
+
+To terminate a loop, use the `end` keyword:
 ```zoop
-loop {
+loop
    ...
    end
    ...
-}
+end loop
 ```
 ---
 Iterative implementaion of `pow` zoop (for integer exponents):
