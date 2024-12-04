@@ -1,18 +1,18 @@
 {
-  "name": "zoop-lang",
-  "version": "0.1.0",
-  "description": "A simple interpreter for a simple language",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Lio Giladi",
-  "license": "ISC",
-  "bin": {
-    "zoop": "index.js"
-  },
-  "type": "module",
-  "dependencies": {
-    "@types/node": "^22.10.1",
-    "prompt-sync": "^4.2.0"
-  }
+	"name": "zoop-lang",
+	"version": "0.1.0",
+	"description": "A simple interpreter for a simple language",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "Lio Giladi",
+	"license": "BSD-1-Clause",
+	"bin": {
+		"zoop": "index.js"
+	},
+	"type": "module",
+	"dependencies": {
+		"@types/node": "^22.10.1",
+		"prompt-sync": "^4.2.0"
+	}
 }
