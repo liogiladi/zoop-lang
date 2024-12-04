@@ -18,17 +18,24 @@
 A basic interpreter for Zoop language.
 
 > Unfortunetly, markdown's custom code snippets / html tags cannot be highlighted.
-> So everything is a blob of white text :/
+> So everything is a blob of black/white text :/
 ---
-To get started, have node installed and run the following command to run zoop files:
+
+To get started, have node.js installed, clone the repo and run the following command:
+```console
+npm i
+```
+After that you can freely interpret zoop files like so:
 ```console
 npx zoop filename_or_path
 ```
+> [!IMPORTANT]
 > Giving only the file name (+ .zoop) will look for this file in the current directory.
 > 
 > To specify a different path, give a relative/absolute one, i.e ../../filename.zoop.
 
----
+> [!NOTE]
+> Currently you have to clone the repo. Working on publishing the package to npm.
 
 # Comments
 ```zoop
