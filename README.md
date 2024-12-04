@@ -21,11 +21,11 @@ A basic interpreter for Zoop language.
 > So everything is a blob of black/white text :/
 ---
 
-To get started, have node.js installed, clone the repo and run the following command:
+1. Have node.js installed, clone the repo and run the following command:
 ```console
 npm i
 ```
-After that you can freely interpret zoop files like so:
+2. Then you can freely interpret zoop files like so:
 ```console
 npx zoop filename_or_path
 ```
@@ -36,6 +36,14 @@ npx zoop filename_or_path
 
 > [!NOTE]
 > Currently you have to clone the repo. Working on publishing the package to npm.
+
+---
+
+# Color schemes / Syntax Highlighting
+Currently available:
+- Webstorm/Intelij: [Download](https://github.com/liogiladi/zoop-lang/blob/main/intelij-settings.zip)
+
+---
 
 # Comments
 ```zoop
