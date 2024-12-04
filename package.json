@@ -12,7 +12,9 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@types/node": "^22.10.1",
 		"prompt-sync": "^4.2.0"
+	},
+	"devDependencies": {
+		"@types/node": "^22.10.1"
 	}
 }
