@@ -8,7 +8,7 @@
 	"author": "Lio Giladi",
 	"license": "BSD-1-Clause",
 	"bin": {
-		"zoop": "index.js"
+		"zoop-script": "index.js"
 	},
 	"type": "module",
 	"dependencies": {
