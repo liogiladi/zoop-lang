@@ -339,7 +339,11 @@ end zoop
 @calmpedNum:dec <- `clamp` de 5.3 2.4 7.8 -- 2.4
 ```
 
-Implementaion of `pow` zoop (for integer exponents):
+> [!CAUTION]
+> Be aware of a deep zoop tree. Eventually one will reach a maximum de stack.
+> Classic example of this will be with an unterminated recursion. 
+
+Recursive implementaion of `pow` zoop (for integer exponents):
 ```zoop
 zoop:dec`_pow` <- $base:dec $exp:uint => {
     if $exp = 0u => 1.0 ->
@@ -357,16 +361,67 @@ zoop:dec`pow` <- $base:dec $exp:int => {
     1.0 / (`_pow` de $base (-$exp)~uint) ->
 }
 
-`pow` de -3.0 (-2) ->|
+`pow` de -3.0 (-3) ->| -- -1/27
 ```
 > [!NOTE]
 > Notice that the second argument must be wraped in `()`.
 > As mentioned above, if the argument won't be grouped, it will parsed as part of a binary operation with `-3.0`
 > and there will be an arguments - parameters count mismatch
 
+# Secret
+If one desires, one can use the power of the `loop`.
+Yes yes I know I said _"Zoop de loop"_ but that is why it's a secret!
+And I am telling it only to you 🤫
+
+```zoop
+**loop** {
+   ...
+}
+```
+The loops runs indefinitely unless told otherwise. 
+
+To terminate the loop, use the `end` keyword:
+```zoop
+loop {
+   ...
+   end
+   ...
+}
+```
+---
+Iterative implementaion of `pow` zoop (for integer exponents):
+```zoop
+zoop:dec`pow` <- $base:dec $exp:int => {
+    if $exp = 0 => 1.0 ->
+    if $exp = 1 => $base ->
+
+    @res:dec <- $base
+    if $exp < 0 => @res <- 1.0/@res
+
+    @i:int <- $exp
+    loop
+        if $exp < 0
+            @i <- @i+1
+            if @i = 0 => end
+            @res <- @res * (1.0 / $base)
+        end if
+        else
+            @i <- @i-1
+            if @i = 0 => end
+            @res <- @res *  $base
+        end else
+    end loop
+
+    @res ->
+}
+
+`pow` de -3.0 (-3) ->| -- -1/27
+```
+> This is a bit longer than the recursive implementation but more practical for non small inputs (due to zoop contexts size limitations).
+
 ## Roadmap
 
--   [ ] Secret
+-   [x] Secret
 -   [ ] Switch case like?
 -   [ ] Error handeling
 
