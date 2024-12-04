@@ -1,0 +1,42 @@
+loop => {
+    "---------------------------------------------" ->|
+    "Dear sire, would you kindly reveal your name?" ->|
+    "" ->|
+
+    if ($name:string <- <-|`What is your name:`) = "Lio"
+        "You truly are my master!" ->|
+    end if
+    else => {
+        $name_" you say... Who are you fiend!?" ->|
+        "Wait a second... are you a child?" ->|
+        "What is your age? You better not lie." ->|
+        "" ->|
+
+        $age:int <- <-|:int`Your age:`
+
+        @res:string <- ""
+
+        if $age < 18
+            @res <- "No! Now I can't legally dismantle you :("
+        end if
+        elif $age > 100 => @res <- "Liar... To the cops!"
+        else
+            @res <- "Excellent! I shall now commence the killing >:)"
+        end else
+
+        @res ->|
+    }
+
+    -- Retry
+
+    "" ->|
+    "And that is how things went... Would you want to rewrite history? (Y/N)" ->|
+
+    @ans:string <- <-|
+    loop
+        if @ans = "Y" | @ans = "N" => end
+        @ans <- <-|
+    end loop
+
+    if @ans = "N" => end
+}

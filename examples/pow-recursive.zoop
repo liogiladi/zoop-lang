@@ -1,0 +1,17 @@
+zoop:dec`_pow` <- $base:dec $exp:uint => {
+    if $exp = 0u => 1.0 ->
+    elif $exp = 1u => $base ->
+
+    @dst:uint <- $exp-1u
+    @src:dec <- $base
+
+    $base * `_pow` de @src @dst ->
+}
+
+zoop:dec`pow` <- $base:dec $exp:int => {
+    if $exp = 1 => 1 ->
+    if $exp > 0 => `_pow` de $base $exp~uint ->
+    1.0 / (`_pow` de $base (-$exp)~uint) ->
+}
+
+`pow` de -3.0 (-3) ->|

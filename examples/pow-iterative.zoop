@@ -1,0 +1,25 @@
+zoop:dec`pow` <- $base:dec $exp:int => {
+    if $exp = 0 => 1.0 ->
+    if $exp = 1 => $base ->
+
+    @res:dec <- $base
+    if $exp < 0 => @res <- 1.0/@res
+
+    @i:int <- $exp
+    loop
+        if $exp < 0
+            @i <- @i+1
+            if @i = 0 => end
+            @res <- @res * (1.0 / $base)
+        end if
+        else
+            @i <- @i-1
+            if @i = 0 => end
+            @res <- @res *  $base
+        end else
+    end loop
+
+    @res ->
+}
+
+`pow` de -3.0 (-3) ->|

@@ -1,0 +1,18 @@
+zoop`pyramid` <- $size:uint => {
+    @i:int <- 0
+    loop => {
+        if @i >= $size => end
+        @i <- @i + 1
+
+        @j:int <- 0
+        @str:string <- ""
+        loop
+           if @j >= @i => end
+           @str <- @str_"#"
+           @j <- @j+1
+        end loop
+        @str ->|
+    }
+}
+
+`pyramid` de 6u
