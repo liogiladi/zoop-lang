@@ -27,7 +27,7 @@ npm i
 ```
 2. Then you can freely interpret zoop files like so:
 ```console
-npx zoop filename_or_path
+npx zoop-script filename_or_path
 ```
 > [!IMPORTANT]
 > Giving only the file name (+ .zoop) will look for this file in the current directory.
